@@ -1,0 +1,108 @@
+task_list = []
+completed_task_list = []
+
+# Defining functions
+def welcome_message():
+    print("Welcome to To-Do List Manager!")
+
+# program list
+def functions():
+    print ()
+    print ("What can i do for you")
+    program_functions = [
+        "1. Add task",
+        "2. View tasks",
+        "3. Mark task as completed",
+        "4. Delete a task",
+        "5. Exit"
+    ]
+    for program in program_functions:
+        print(program)
+
+#adding tasks
+def add_task(task_list, task):
+    if task:
+        task_list.append(task)
+        print(task, "successfully added to the list.")
+    else:
+        print("Task cannot be empty.")
+
+#view task
+def view_task(task_list, completed_task_list):
+    print("======Tasks======")
+    if not task_list:
+        print("There are no tasks.")
+    else:
+        for index, task in enumerate(task_list):
+            status = "True" if task in completed_task_list else "False"
+            
+            print ({"No":index, "Task":task, "Completed":status})
+
+#mark as complete
+def mark_as_complete(task_list, completed_task_list):
+    if not task_list:
+        print("There are no tasks to mark as complete.")
+        return
+
+    print("Which task would you like to mark as complete?")
+    view_task(task_list, completed_task_list)
+    try:
+        task_number = int(input("Input the number of the task you want to complete: "))
+        if 0 <= task_number < len(task_list):
+            task_completed = task_list[task_number]
+            if task_completed in completed_task_list:
+                print(task_completed," has already been marked as completed.")
+            else:
+                completed_task_list.append(task_completed)
+                print(task_completed, " marked as completed.")
+        else:
+            print("Invalid task number. Please try again.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
+def delete_task(task_list, completed_task_list):
+    if not task_list:
+        print("There are no tasks to delete.")
+        return
+
+    print("Which task would you like to delete?")
+    view_task(task_list, completed_task_list)
+    try:
+        task_number = int(input("Input the number of the task you want to delete: "))
+        if 0 <= task_number < len(task_list):
+            task_to_delete = task_list[task_number]
+            task_list.pop(task_number)
+            if task_to_delete in completed_task_list:
+                completed_task_list.remove(task_to_delete)
+            print(task_to_delete, " successfully deleted.")
+        else:
+            print("Invalid task number. Please try again.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
+# Main program
+if __name__ == "__main__":
+    welcome_message()
+    while True:
+        try:
+            functions ()
+            print()
+            option = int(input ("please input option (1-5)  "))
+            print()
+            if option == 1:
+                task = input("Input new task ").capitalize()
+                add_task(task_list,task)
+            elif option == 2:
+                view_task(task_list, completed_task_list)
+            elif option == 3:
+                mark_as_complete(task_list, completed_task_list)
+            elif option == 4:
+                delete_task(task_list, completed_task_list)
+            elif option == 5:
+                print ("Goodbye")
+                break
+            else:
+                print("Invalid choice. Please select a number between 1 and 5.")
+        
+        except ValueError:
+            print("Invalid input. Please enter a number.")
